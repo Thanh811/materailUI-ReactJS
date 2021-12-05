@@ -8,9 +8,17 @@ import { DropzoneArea } from 'react-mui-dropzone';
 
 const CreateForm = () => {
   const navigate = useNavigate()
-  const [files, setFiles] = useState<File[]>([])
+  const [files, setFiles] = useState<string>('')
   console.log("🚀 ~ file: CreateForm.tsx ~ line 12 ~ CreateForm ~ files", files)
 
+  const uploadImage = (file: File[]) => {
+  console.log("🚀 ~ file: CreateForm.tsx ~ line 15 ~ uploadImage ~ file", file)
+    if (Array.isArray(file) && file.length > 0) {
+      // const form = new FormData()
+      // form.append('file', file[0])
+      setFiles(URL.createObjectURL(file[0]))
+    }
+  }
   return (
     <Box>
     <Typography variant="h5" gutterBottom component="div">
@@ -27,11 +35,12 @@ const CreateForm = () => {
   </Typography>
   {/* Image */}
   <DropzoneArea
-    onChange={(file) => setFiles(file)}
+    onChange={(file) => uploadImage(file)}
     filesLimit={1}
     acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
 
   />
+  <img src={files} alt=""/>
   <Typography variant="body2" gutterBottom>
     Name
   </Typography>
