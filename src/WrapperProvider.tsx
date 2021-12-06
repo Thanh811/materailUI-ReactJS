@@ -1,11 +1,27 @@
-import { createContext } from 'react'
-export const QuoteDetailContext = createContext<FormData | null>(null)
-
-const WrapperProvider = () => {
-  return (
-    // <QuoteDetailContext value=>
-    <h2>ahaha</h2>
-  )
+import { createContext, useState, Dispatch, SetStateAction } from "react";
+interface IProvider {
+  files: string;
+  setFiles: Dispatch<SetStateAction<string>>;
+  setType: Dispatch<SetStateAction<string>>;
+  type: string;
+  resetFile: () => void;
 }
+export const WrapperContext = createContext<IProvider | null>(null);
 
-export default WrapperProvider
+const WrapperProvider: React.FC = ({ children }) => {
+  const [files, setFiles] = useState<string>("");
+  const [type, setType] = useState("");
+  const resetFile = () => {
+    setFiles("");
+    setType("");
+  };
+  return (
+    <WrapperContext.Provider
+      value={{ files, setFiles, type, setType, resetFile }}
+    >
+      {children}
+    </WrapperContext.Provider>
+  );
+};
+
+export default WrapperProvider;
